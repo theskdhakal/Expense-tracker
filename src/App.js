@@ -1,10 +1,12 @@
 import "./App.css";
-import Login from "./pages/Login/Login";
-import Register from "./pages/Register/Register";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import { Layout } from "./components/layout/Layout";
-import { Routes, Route } from "react-router-dom";
+
+import Login from "./pages/login/Login";
+import Register from "./pages/register/Register";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Layout from "./components/layout/Layout";
+import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+import { PrivateRoute } from "./components/private-route/PrivateRoute";
 
 function App() {
   return (
@@ -12,8 +14,16 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="Register" element={<Register />} />
-          <Route path="/" element={<Dashboard />} />
+          <Route path="register" element={<Register />} />
+
+          <Route
+            path="dashboard"
+            element={
+              <PrivateRoute>
+                <Dashboard />
+              </PrivateRoute>
+            }
+          />
         </Routes>
       </Layout>
       <ToastContainer />
