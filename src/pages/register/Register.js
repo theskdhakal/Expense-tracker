@@ -6,7 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/custom-input/CustomInput";
 import { toast } from "react-toastify";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../firebase/firebase-config";
+import { auth, db } from "../../firebase/firebase-config";
+import { doc, setDoc } from "firebase/firestore";
 
 const initialState = {
   password: "Aa12345",
@@ -37,30 +38,47 @@ const Register = () => {
   };
 
   const handleOnSubmit = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    const { confirmPassword, password, email } = frmDt;
+      const { confirmPassword, password, email } = frmDt;
 
-    if (confirmPassword !== password) {
-      return toast.error("Password do not match!");
-    }
-    console.log(frmDt);
-    //user firebase auth service to create user auth account
+      if (confirmPassword !== password) {
+        return toast.error("Password do not match!");
+      }
+      console.log(frmDt);
+      //user firebase auth service to create user auth account
 
-    const pendingState = createUserWithEmailAndPassword(auth, email, password);
-    toast.promise(pendingState, {
-      pending: "please wait..",
-    });
+      const pendingState = createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      toast.promise(pendingState, {
+        pending: "please wait..",
+      });
 
-    const { user } = await pendingState;
-    console.log(user);
+      const { user } = await pendingState;
+      console.log(user);
 
-    if (user?.uid) {
-      toast.success("user has been registered");
+      if (user?.uid) {
+        //user is registered,now let's add them in our databse for future refernce
 
-      //user is registered,now let's add them in our databse for future refernce
+        const userObj = {
+          fName: frmDt.fName,
+          lName: frmDt.lName,
+          email: frmDt.email,
+          // uid: user.uid,
+        };
 
-      //send user to dashboard
+        await setDoc(doc(db, "users", user.uid), userObj);
+        toast.success("user has been registered. you can login now");
+
+        //send user to dashboard
+        // navigate("/dashboard");
+      }
+    } catch (error) {
+      toast.error(error.message);
     }
   };
 
