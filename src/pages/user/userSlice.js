@@ -3,8 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: {},
 };
-
-const userSlice = createSlice({
+const userSlic = createSlice({
   name: "user",
   initialState,
   reducers: {
@@ -14,7 +13,7 @@ const userSlice = createSlice({
   },
 });
 
-const { reducer, actions } = userSlice;
+const { reducer, actions } = userSlic;
 
 export const { setUser } = actions;
 

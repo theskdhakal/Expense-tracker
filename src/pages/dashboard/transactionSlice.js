@@ -1,21 +1,21 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  trans: {},
+  trans: [],
 };
-
-const userSlice = createSlice({
-  name: "user",
+const transSlic = createSlice({
+  name: "trans",
   initialState,
   reducers: {
-    setTrans: (state, action) => {
-      state.trans = action.payload;
+    setTrans: (state, { payload }) => {
+      if (!state.trans.length && !payload.length) return;
+      state.trans = payload;
     },
   },
 });
 
-const { reducer, actions } = userSlice;
+const { reducer, actions } = transSlic;
 
-export const { setUser } = actions;
+export const { setTrans } = actions;
 
 export default reducer;

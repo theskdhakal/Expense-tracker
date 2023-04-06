@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/custom-input/CustomInput";
 import { toast } from "react-toastify";
+
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../../firebase/firebase-config";
 import { doc, setDoc } from "firebase/firestore";
@@ -46,8 +47,8 @@ const Register = () => {
       if (confirmPassword !== password) {
         return toast.error("Password do not match!");
       }
-      console.log(frmDt);
-      //user firebase auth service to create user auth account
+
+      // user firebase auth service to create user auth account
 
       const pendingState = createUserWithEmailAndPassword(
         auth,
@@ -55,27 +56,22 @@ const Register = () => {
         password
       );
       toast.promise(pendingState, {
-        pending: "please wait..",
+        pending: "Please wait ..",
       });
 
       const { user } = await pendingState;
       console.log(user);
-
       if (user?.uid) {
-        //user is registered,now let's add them in our databse for future refernce
+        // user is registered, now let's add them in our database for the future purpose
 
         const userObj = {
           fName: frmDt.fName,
           lName: frmDt.lName,
           email: frmDt.email,
-          // uid: user.uid,
         };
 
         await setDoc(doc(db, "users", user.uid), userObj);
-        toast.success("user has been registered. you can login now");
-
-        //send user to dashboard
-        // navigate("/dashboard");
+        toast.success("User has been registered. You may login now");
       }
     } catch (error) {
       toast.error(error.message);

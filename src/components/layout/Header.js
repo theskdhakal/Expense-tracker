@@ -5,19 +5,19 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase/firebase-config";
-import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../pages/user/userSlice";
 
 export const Header = () => {
   const dispatch = useDispatch();
-
   const { user } = useSelector((state) => state.user);
+
   const handleOnLogOut = () => {
     signOut(auth)
       .then(() => {
         dispatch(setUser({}));
-        toast.success("user logged out");
+        toast.success("user loged out");
       })
       .catch((error) => {
         toast.error(error.message);
@@ -34,28 +34,31 @@ export const Header = () => {
           <Nav className="ms-auto fs-4">
             {user?.uid ? (
               <>
-                <Link to="/dashboard" className="nav-link"></Link>
-                <Link to="/" className="nav-link">
-                  profile
+                <Link to="/dashboard" className="nav-link">
+                  <i className="fa-solid fa-gauge"></i> Dashboard
                 </Link>
 
-                <Link to="/" className="nav-link">
+                <Link to="/profile" className="nav-link">
+                  <i className="fa-solid fa-user"></i> Profile
+                </Link>
+
+                <Link to="#" className="nav-link" onClick={handleOnLogOut}>
                   <i
                     className="fa-solid fa-right-from-bracket"
-                    onClick={handleOnLogOut}
                     title="Log Out"
-                  >
-                    logout
-                  </i>
+                  ></i>
+                  Logout
                 </Link>
               </>
             ) : (
               <>
                 <Link to="/" className="nav-link">
-                  <i className="fa-solid fa-right-to-bracket" title="Login"></i>
+                  <i className="fa-solid fa-right-to-bracket" title="Login"></i>{" "}
+                  Login
                 </Link>
                 <Link to="/register" className="nav-link">
                   <i className="fa-solid fa-user-pen" title="Register"></i>
+                  Signup
                 </Link>
               </>
             )}
