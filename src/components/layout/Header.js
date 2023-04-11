@@ -8,6 +8,7 @@ import { auth } from "../../firebase/firebase-config";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../../pages/user/userSlice";
+import { setTrans } from "../../pages/dashboard/transactionSlice";
 
 export const Header = () => {
   const dispatch = useDispatch();
@@ -18,6 +19,9 @@ export const Header = () => {
       .then(() => {
         dispatch(setUser({}));
         toast.success("user loged out");
+
+        //clear trans state as well
+        dispatch(setTrans([]));
       })
       .catch((error) => {
         toast.error(error.message);
