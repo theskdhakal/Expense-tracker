@@ -7,7 +7,7 @@ import { setUser } from "./userSlice";
 export const autoLogin = (uid) => async (dispatch) => {
   try {
     // get user from firestore serve
-
+    if (!uid) return;
     const userResp = await getDoc(doc(db, "users", uid));
     const userInfo = { ...userResp.data(), uid: uid };
 
