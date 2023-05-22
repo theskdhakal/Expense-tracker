@@ -12,7 +12,7 @@ import {
 import { db } from "../../firebase/firebase-config";
 import { setTrans } from "./transactionSlice";
 
-// pull data from firebase and add to the reduxt store for the specific user basd on the uid
+// pull data from firebase and add to the redux store for the specific user basd on the uid
 export const getTransAction = (userId) => async (dispatch) => {
   try {
     const q = query(

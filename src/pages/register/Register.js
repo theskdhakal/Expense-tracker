@@ -2,7 +2,6 @@ import React, { useState } from "react";
 
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Link, useNavigate } from "react-router-dom";
 import { CustomInput } from "../../components/custom-input/CustomInput";
 import { toast } from "react-toastify";
 
@@ -16,7 +15,6 @@ const initialState = {
 };
 
 const Register = () => {
-  const navigate = useNavigate();
   const [frmDt, setFrmDt] = useState(initialState);
   const [error, setError] = useState("");
 
@@ -60,7 +58,7 @@ const Register = () => {
       });
 
       const { user } = await pendingState;
-      console.log(user);
+      console.log(user.uid);
       if (user?.uid) {
         // user is registered, now let's add them in our database for the future purpose
 
